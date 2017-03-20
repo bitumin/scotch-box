@@ -11,4 +11,12 @@ Vagrant.configure("2") do |config|
     # Optional NFS. Make sure to remove other synced_folder line too
     #config.vm.synced_folder ".", "/var/www", :nfs => { :mount_options => ["dmode=777","fmode=666"] }
 
+    # Download
+    config.vm.provision "shell", path: "01_directories_setup.sh"    # private folders cachewebbook/books /pieces, moodledata, phpu_moodledata, permissions
+    config.vm.provision "shell", path: "02_database_setup.sh"       # create databases moodle and testmoodle
+    config.vm.provision "shell", path: "03_git_setup.sh"            # git init, remote add, git checkout dev
+    config.vm.provision "shell", path: "04_pre_moodle_setup.sh"     # mv _gitignore, mv _config
+    config.vm.provision "shell", path: "05_moodle_download.sh"      # curl, unzip
+    config.vm.provision "shell", path: "06_moodle_setup.sh"         # composer install, sudo -u apache /usr/bin/php admin/cli/install.php --lang=es
+
 end
